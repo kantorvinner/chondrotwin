@@ -1,0 +1,16 @@
+CartiDT forward chain (chondrotwin)
+
+  3D DESS volume  [B,1,160,384,384]
+        |
+   wedging         z-score + affine/elastic/photometric augmentation
+        |
+   wheel           frozen DINOv2 ViT-L + depth-wise LoRA (r=16, a=32)   Eq 1-2
+        |
+   trimming        UPerNet (FPN + PPM) -> six compartments + background  Eq 3
+        |
+   armature        region pooling -> GraphSAGE over 14 nodes / 26 edges  Eq 4
+        |                         (contact-area edges, frozen)
+   assay           Dirichlet head (Softplus+1) -> alpha, K=4            Eq 5-6
+        |                         EDL loss + KL anneal                  Eq 7-9
+        v
+   grade + (u_ale, u_epi)         joint loss L = L_seg + 0.5 * L_EDL    Eq 10

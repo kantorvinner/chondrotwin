@@ -1,0 +1,55 @@
+model:
+  depth: 160
+  height: 384
+  width: 384
+  num_seg_classes: 7
+  num_nodes: 14
+  num_grades: 4
+  embed_dim: 1024
+  vit_depth: 24
+  heads: 16
+  patch: 16
+  mlp_ratio: 4.0
+  base_grid: 24
+  depth_tokens: 40
+  depth_stride: 4
+  use_depth: true
+  lora_rank: 16
+  lora_alpha: 32.0
+  decoder_channels: 256
+  decoder_levels: 4
+  twin_hidden: 256
+  twin_layers: 1
+  edge_mode: fc
+  head_hidden: 128
+  use_pretrained: false
+  transfer: lora
+  use_gnn: true
+  head_kind: dirichlet
+train:
+  seed: 42
+  epochs: 120
+  grad_accum: 2
+  max_steps: null
+  amp: true
+  amp_dtype: bfloat16
+  batch_size: 4
+optim:
+  lr: 0.0002
+  weight_decay: 0.01
+  beta1: 0.9
+  beta2: 0.999
+sched:
+  warmup_epochs: 5
+  total_epochs: 120
+  peak_lr: 0.0002
+  floor_lr: 1.0e-06
+objective:
+  edl_weight: 0.5
+  anneal_epochs: 10
+data:
+  corpus: oai_zib
+  root: null
+  train_len: 8
+  val_len: 4
+output_dir: runs

@@ -1,0 +1,72 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "chondrotwin"
+version = "0.1.0"
+description = "Cross-modal foundation-model transfer with an anatomy-graph digital twin and Dirichlet evidential uncertainty for subclinical knee cartilage damage"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = [
+    "torch>=2.1",
+    "torchvision>=0.16",
+    "einops>=0.7",
+    "numpy>=1.24",
+    "scipy>=1.10",
+    "scikit-learn>=1.3",
+    "statsmodels>=0.14",
+    "hydra-zen>=0.12",
+    "hydra-core>=1.3",
+    "omegaconf>=2.3",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+backbone = ["timm>=0.9", "transformers>=4.38"]
+medio = ["monai>=1.3", "SimpleITK>=2.3"]
+export = ["onnx>=1.15"]
+dev = ["ruff>=0.5", "black>=24.3", "isort>=5.13", "mypy>=1.9", "pytest>=8.0", "pre-commit>=3.6"]
+
+[project.scripts]
+chondrotwin-fire = "chondrotwin.gallery.train:main"
+chondrotwin-inspect = "chondrotwin.gallery.evaluate:main"
+chondrotwin-pull = "chondrotwin.gallery.infer:main"
+chondrotwin-cast = "chondrotwin.gallery.export_onnx:main"
+
+[tool.setuptools.packages.find]
+include = ["chondrotwin*"]
+
+[tool.black]
+line-length = 100
+target-version = ["py310"]
+
+[tool.isort]
+profile = "black"
+line_length = 100
+known_first_party = ["chondrotwin"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM", "RUF"]
+ignore = ["RUF002", "RUF003", "B008"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["chondrotwin"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+warn_return_any = false
+disallow_untyped_calls = false
+disallow_untyped_decorators = false
+ignore_missing_imports = true
+files = ["chondrotwin"]
+
+[tool.pytest.ini_options]
+testpaths = ["provings"]
+addopts = "-q"
